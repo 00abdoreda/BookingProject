@@ -177,6 +177,6 @@ const httpsOptions = {
   key: fs.readFileSync("./security/cert.key"),
   cert: fs.readFileSync("./security/cert.pem"),
 };
-const server = http.createServer(app).listen(8000, "192.168.1.75", () => {
+const server = http.createServer(app).listen(8000, () => {
   console.log("server running at " + 8000);
 });
