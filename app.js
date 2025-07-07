@@ -26,7 +26,7 @@ app.use(
   })
 );
 
-app.set("port", 4009);
+app.set("port", 8000);
 
 // set morgan to log info about our requests for development use.
 app.use(morgan("dev"));
@@ -173,10 +173,13 @@ app.get("/logout", (req, res) => {
 app.use(function (req, res, next) {
   res.status(404).send("Sorry can't find that!");
 });
-const httpsOptions = {
-  key: fs.readFileSync("./security/cert.key"),
-  cert: fs.readFileSync("./security/cert.pem"),
-};
-const server = http.createServer(app).listen(8000, () => {
-  console.log("server running at " + 8000);
-});
+// const httpsOptions = {
+//   key: fs.readFileSync("./security/cert.key"),
+//   cert: fs.readFileSync("./security/cert.pem"),
+// };
+// const server = http.createServer(app).listen(8000, () => {
+//   console.log("server running at " + 8000);
+// });
+app.listen(app.get('port'),()=>{
+  console.log("rinning...");
+})
