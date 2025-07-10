@@ -16,14 +16,19 @@ const admin = require("./Model/adminModel");
 const cors = require("cors");
 const https = require("https");
 const fs = require("fs");
+const allowAnyCORS = (req, res, next) => {
+res.header("Access-Control-Allow-Origin", "*");
+res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 
+if (req.method === "OPTIONS") {
+return res.sendStatus(200); // Respond to preflight
+}
+
+next();
+};
 app.use(
-  cors({
-    origin: "http://localhost:3001", // set the allowed origin
-    // methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH', 'OPTIONS'], // set the allowed HTTP methods
-    // allowedHeaders: ['Content-Type'], // set the allowed headers
-    credentials: true, // set the allowed credentials
-  })
+  allowAnyCORS
 );
 
 app.set("port", 8000);
