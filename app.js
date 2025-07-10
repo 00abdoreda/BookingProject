@@ -37,7 +37,8 @@ app.set("trust proxy", 1);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 mongoos.set("strictQuery", false);
-mongoos
+
+await mongoos
   .connect("mongodb+srv://Booking:122333@cluster0.0kp89ax.mongodb.net/book", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
