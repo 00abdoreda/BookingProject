@@ -43,7 +43,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 mongoos.set("strictQuery", false);
 
-await mongoos
+mongoos
   .connect("mongodb+srv://Booking:122333@cluster0.0kp89ax.mongodb.net/book", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
