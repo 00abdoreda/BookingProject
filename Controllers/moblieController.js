@@ -106,33 +106,28 @@ let getDoctors = async(req, res) => {
   }
  
  
-  let getDoctors2 = async(req, res) => {
-   
+let getDoctors2 = async (req, res) => {
+  try {
     const doctors = await doctormodel.find({}, { ratearr: 0 }).sort({ rate: -1 }).exec();
-  
-   if(!doctors || doctors.length === 0)
+
+    if (!doctors || doctors.length === 0)
       return res.status(404).send("not found");
 
-      let newDoctors = [];
-
-      doctors.forEach(async(e)=>{
-
-              const schedule = await schedulemodel.findOne({ doctormobile: e.mobile });
-             let newobj={...e,schedual:schedule}
-             newDoctors.push(newobj)
-
-
+    // Use Promise.all with map
+    const newDoctors = await Promise.all(
+      doctors.map(async (e) => {
+        const schedule = await schedulemodel.findOne({ doctormobile: e.mobile });
+        return { ...e._doc, schedual: schedule };
       })
-return res.status(200).send(newDoctors)
+    );
 
-
-
-
-  
-   
-  
-
+    return res.status(200).json(newDoctors); // استخدم json بدل stringify+send
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Internal server error");
+  }
 }
+
 
 
 // @desc booking  

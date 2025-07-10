@@ -23,6 +23,6 @@ route.get('/getaccount/:mobile',patient.getaccount)
 //get appoint
 route.get('/getappoint/:mobile',mobile.getappointment)
 //get all doctors with schedule
-route.get('/getDoctors',mobile.getDoctors2)
+route.get('/getDoctorswithsc',mobile.getDoctors2)
 
 
