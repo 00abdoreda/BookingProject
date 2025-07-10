@@ -19,7 +19,7 @@ const fs = require("fs");
 
 app.use(
   cors({
-    origin: "*", // set the allowed origin
+    origin: "http://localhost:3001", // set the allowed origin
     // methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH', 'OPTIONS'], // set the allowed HTTP methods
     // allowedHeaders: ['Content-Type'], // set the allowed headers
     credentials: true, // set the allowed credentials
