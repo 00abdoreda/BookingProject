@@ -104,6 +104,36 @@ let getDoctors = async(req, res) => {
     //   res.status(404).send("not found");
     // }
   }
+ 
+ 
+  let getDoctors2 = async(req, res) => {
+   
+    const doctors = await doctormodel.find({}, { ratearr: 0 }).sort({ rate: -1 }).exec();
+  
+   if(!doctors || doctors.length === 0)
+      return res.status(404).send("not found");
+
+      let newDoctors = [];
+
+      doctors.forEach(async(e)=>{
+
+              const schedule = await schedulemodel.findOne({ doctormobile: e.mobile });
+             let newobj={...e,schedual:schedule}
+             newDoctors.push(newobj)
+
+
+      })
+return res.status(200).send(newDoctors)
+
+
+
+
+  
+   
+  
+
+}
+
 
 // @desc booking  
 let booking=async(req,res)=>{
@@ -379,4 +409,4 @@ let getappointment=async(req,res)=>{
 
 
 
-module.exports={newaccount,login,getDoctors,showBooking,updateaccount,booking,ratedoctor,getappointment};
+module.exports={newaccount,login,getDoctors,showBooking,updateaccount,booking,ratedoctor,getappointment,getDoctors2};

@@ -20,7 +20,7 @@ const fs = require("fs");
 app.use(
   cors({
     origin: "http://localhost:3001", // set the allowed origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH', 'OPTIONS'], // set the allowed HTTP methods
+   // methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH', 'OPTIONS'], // set the allowed HTTP methods
     // allowedHeaders: ['Content-Type'], // set the allowed headers
     credentials: true, // set the allowed credentials
   })
@@ -62,7 +62,7 @@ app.use(
   session({
     key: "user_sid",
     secret: process.env.booking_app_jwt_secret,
-    resave: false,
+    resave: true,
     saveUninitialized: false,
 
     cookie: {
@@ -141,7 +141,17 @@ app.post("/login", async (req, res) => {
       }
 
       req.session.user = adminuser;
-      res.status(201).send("success admin");
+      req.session.save((err) => {
+  if (err) {
+    console.error("Session save error:", err);
+    return res.status(500).send("server error");
+  }
+  return res.status(201).send("success admin");
+});
+      
+
+      
+      
     } else {
       return res.status(404).send("not found");
     }

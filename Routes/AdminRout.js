@@ -8,12 +8,14 @@ module.exports = route;
 
 let sessionChecker = (req, res, next) => {
   if (
-    req.session.user &&
-    req.cookies.user_sid &&
-    req.session.user.isadmin == true
+    req.cookies.user_sid
+    // req.session.user &&
+    // req.cookies.user_sid &&
+    // // req.session.user.isadmin == true
   ) {
     next();
   } else {
+    console.log(req.cookies);
     return res.status(403).send("forbidden....");
   }
 };
