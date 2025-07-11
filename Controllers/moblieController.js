@@ -108,7 +108,7 @@ let getDoctors = async(req, res) => {
  
 let getDoctors2 = async (req, res) => {
   try {
-    const doctors = await doctormodel.find({}, { ratearr: 0 }).sort({ rate: -1 }).exec();
+    const doctors = await doctormodel.find({mobile:req.params.mobile}, { ratearr: 0 }).sort({ rate: -1 }).exec();
 
     if (!doctors || doctors.length === 0)
       return res.status(404).send("not found");
