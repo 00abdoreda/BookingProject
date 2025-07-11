@@ -130,7 +130,7 @@ let getDoctors2 = async (req, res) => {
 
 
 let makebook=async(req,res)=>{
-    const checkavail=await bookDocModel.findOne({mobileDoc:req.body.mobileDoc,mobilePat:req.body.mobilePat,date:req.body.date,time:req.body.time}).exec()
+    const checkavail=await bookDocModel.findOne({mobileDoc:req.body.mobileDoc,date:req.body.date,time:req.body.time}).exec()
     if(checkavail){
         return res.status(201).send("booking found in this time")
     }
