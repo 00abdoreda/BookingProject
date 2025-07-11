@@ -384,37 +384,47 @@ let ratedoctor=async(req,res)=>{
     }
 }
 
-let getappointment=async(req,res)=>{
-    const booking= await bookDocModel.find({mobilePat:req.params.mobile}).sort({date:-1,time:-1}).exec()
-    if(!booking){
-        return res.status(404).send('notfound')
-    }
-    const std2 =await Promise.all( booking.map(person => ({ mobile: person.mobileDoc })));
-    const std3 =await Promise.all( booking.map(person => ({ mobile: person.mobileDoc,time:person.time,date:person.date })));
-    let newarr=[]
+const getappointment = async (req, res) => {
+  try {
+    const bookings = await bookDocModel
+      .find({ mobilePat: req.params.mobile })
+      .sort({ date: -1, time: -1 })
+      .exec();
 
-    for(i of std2){
-        const std4=await doctormodel.findOne({mobile:i.mobile})
-        newarr.push(std4)
-        
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).send('notfound');
     }
 
-    // const pats = await  doctormodel.aggregate([
-    //     { $match: { mobile: { $in: std2 } } },
-    //     { $addFields: { order: { $indexOfArray: [std2, '$mobile'] } } },
-    //     { $sort: { order: 1 } }
-    //   ]);
-      const result =await Promise.all( std3.map((appt, index) => ({
-        mobile: appt.mobile,
-        time: appt.time,
-        date: appt.date,
-         firstName: newarr[index].firstName,
-         lastName: newarr[index].lastName,
-      })));
-    
-      return res.status(200).send(result)
+    const doctorMobiles = bookings.map(b => b.mobileDoc);
 
-}
+    // Fetch all doctor details at once using $in to reduce DB hits
+    const doctors = await doctormodel.find({ mobile: { $in: doctorMobiles } });
+
+    // Convert to map for quick lookup
+    const doctorMap = {};
+    doctors.forEach(doc => {
+      doctorMap[doc.mobile] = doc;
+    });
+
+    // Construct final result
+    const result = bookings.map(b => {
+      const doctor = doctorMap[b.mobileDoc];
+      return {
+        mobile: b.mobileDoc,
+        time: b.time,
+        date: b.date,
+        firstName: doctor?.firstName || '',
+        lastName: doctor?.lastName || '',
+      };
+    });
+
+    return res.status(200).send(result);
+  } catch (error) {
+    console.error('Error in getappointment:', error);
+    return res.status(500).send('Server error');
+  }
+};
+
 
 
 
