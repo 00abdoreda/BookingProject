@@ -397,24 +397,22 @@ const getappointment = async (req, res) => {
 
     const doctorMobiles = bookings.map(b => b.mobileDoc);
 
-    // Fetch all doctor details at once using $in to reduce DB hits
     const doctors = await doctormodel.find({ mobile: { $in: doctorMobiles } });
 
-    // Convert to map for quick lookup
+    // Build a lookup map
     const doctorMap = {};
     doctors.forEach(doc => {
       doctorMap[doc.mobile] = doc;
     });
 
-    // Construct final result
     const result = bookings.map(b => {
-      const doctor = doctorMap[b.mobileDoc];
+      const doctor = doctorMap[b.mobileDoc] || {};
       return {
         mobile: b.mobileDoc,
         time: b.time,
         date: b.date,
-        firstName: doctor?.firstName || '',
-        lastName: doctor?.lastName || '',
+        firstName: doctor.firstName || '',
+        lastName: doctor.lastName || '',
       };
     });
 
@@ -424,6 +422,7 @@ const getappointment = async (req, res) => {
     return res.status(500).send('Server error');
   }
 };
+
 
 
 
