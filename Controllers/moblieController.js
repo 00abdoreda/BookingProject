@@ -129,7 +129,27 @@ let getDoctors2 = async (req, res) => {
 }
 
 
+let makebook=async(req,res)=>{
+    const checkavail=await bookDocModel.findOne({mobileDoc:req.body.mobileDoc,mobilePat:req.body.mobilePat,date:req.body.date,time:req.body.time}).exec()
+    if(checkavail){
+        return res.status(201).send("booking found in this time")
+    }
+    const {mobileDoc,mobilePat,date,time} = req.body
+    const book=new bookDocModel({mobileDoc,mobilePat,date,time})
+    //mobilepat:req.body.mobilepat
+    //date:
 
+
+    book.save().then(()=>{
+        res.status(200).send(book)
+    }).catch((err)=>{
+        for(let e in err.errors){
+            console.log(err.errors[e].message)
+            res.status(400).send("Bad Request...")
+        }
+    })
+
+}
 // @desc booking  
 let booking=async(req,res)=>{
     const day=req.body.day;
@@ -404,4 +424,4 @@ let getappointment=async(req,res)=>{
 
 
 
-module.exports={newaccount,login,getDoctors,showBooking,updateaccount,booking,ratedoctor,getappointment,getDoctors2};
+module.exports={newaccount,login,getDoctors,showBooking,updateaccount,booking,ratedoctor,getappointment,getDoctors2,makebook};

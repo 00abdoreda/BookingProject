@@ -15,7 +15,7 @@ route.get('/showBooking/:mobilePat',mobile.showBooking)
 //update account
 route.patch('/updateaccount/:mobilePat',mobile.updateaccount)
 //book doctor
-route.post('/bookdoctor',mobile.booking)
+route.post('/bookdoctor',mobile.makebook)
 //rate doctor
 route.patch('/reatedoctor',mobile.ratedoctor)
 //getaccount
