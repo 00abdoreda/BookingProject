@@ -140,7 +140,7 @@ let updateaccount = async (req, res) => {
 let updatetimetable = async (req, res) => {
   const body = req.body;
   const doc = await schedual
-    .findOneAndUpdate({ mobile: req.session.user.mobile }, body)
+    .findOneAndUpdate({ doctormobile: req.session.user.mobile }, body)
     .exec();
   if (!doc) {
     return res.status(400).send("notfound");
@@ -209,6 +209,7 @@ let getapointmentlist = async (req, res) => {
       mobile: person.mobilePat,
       time: person.time,
       date: person.date,
+      id:person._id
     }))
   );
 
@@ -223,6 +224,7 @@ let getapointmentlist = async (req, res) => {
       mobile: appt.mobile,
       time: appt.time,
       date: appt.date,
+      id:appt.id,
 
       firstName: newarr[index].firstName,
       lastName: newarr[index].lastName,
@@ -245,6 +247,7 @@ let getapointmentlistforadmin = async (req, res) => {
       mobile: person.mobilePat,
       time: person.time,
       date: person.date,
+      id:person._id
     }))
   );
 
@@ -259,6 +262,7 @@ let getapointmentlistforadmin = async (req, res) => {
       mobile: appt.mobile,
       time: appt.time,
       date: appt.date,
+      id:appt.id,
 
       firstName: newarr[index].firstName,
       lastName: newarr[index].lastName,
