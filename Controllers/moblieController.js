@@ -59,7 +59,7 @@ let login=async(req,res)=>{
 
 // @desc getDoctors and filter it by address and day
 let getDoctors = async(req, res) => {
-    const doctors = await doctormodel.find({}, { ratearr: 0 }).sort({ rate: -1 }).exec();
+    const doctors = await doctormodel.find({isactive:true}, { ratearr: 0 }).sort({ rate: -1 }).exec();
   
     if (!doctors || doctors.length === 0) {
       return res.status(400).send("no doctors");
